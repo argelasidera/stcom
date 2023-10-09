@@ -1,2 +1,2 @@
-from app.models.role_permissions import role_permissions, Roles, Permissions
-from app.models.users import Users
+from app.models.role_permission import role_permissions, Role, Permission
+from app.models.user import User

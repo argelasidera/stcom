@@ -12,7 +12,7 @@ role_permissions = db.Table(
 )
 
 
-class Roles(db.Model):
+class Role(db.Model):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -21,10 +21,10 @@ class Roles(db.Model):
     created_at = db.Column(DateTime, default=datetime.datetime.utcnow)
 
     def __repr__(self):
-        return f'<Roles "{self.title}">'
+        return f'<Roles "{self.name}">'
 
 
-class Permissions(db.Model):
+class Permission(db.Model):
     __tablename__ = 'permissions'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -32,4 +32,4 @@ class Permissions(db.Model):
     slug = db.Column(db.String(120), nullable=False)
 
     def __repr__(self):
-        return f'<Permissions "{self.title}">'
+        return f'<Permissions "{self.name}">'
