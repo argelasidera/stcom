@@ -1,10 +1,9 @@
 from flask import Flask
 from config import Config
 from dotenv import load_dotenv
-from app.extensions import db, migrate, bcrypt
+from app.extensions import db, migrate, bcrypt, seeder
 
 load_dotenv()
-
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -16,6 +15,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    seeder.init_app(app, db)
 
     # Register blueprints here
     from app.users import bp as users_bp
