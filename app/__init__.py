@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
 from dotenv import load_dotenv
-from app.extensions import db
+from app.extensions import db, migrate
 
 load_dotenv()
 
@@ -11,7 +11,10 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     # Initialize Flask extensions here
+    from app import models
+
     db.init_app(app)
+    migrate.init_app(app, db)
 
     # Register blueprints here
     from app.users import bp as users_bp
