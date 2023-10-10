@@ -4,30 +4,51 @@ from app.extensions import db
 
 
 role_permissions = db.Table(
-    'role_permissions',
-    db.Column('role_id', db.Integer, db.ForeignKey('roles.id'), primary_key=True),
-    db.Column('permission_id', db.Integer, db.ForeignKey('permissions.id'), primary_key=True),
+    "role_permissions",
+    db.Column(
+        "role_id",
+        db.Integer,
+        db.ForeignKey("roles.id"),
+        primary_key=True
+    ),
+    db.Column(
+        "permission_id",
+        db.Integer,
+        db.ForeignKey("permissions.id"),
+        primary_key=True
+    ),
 )
 
 
 class Role(db.Model):
-    __tablename__ = 'roles'
+    __tablename__ = "roles"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     slug = db.Column(db.String(120), nullable=False)
+    permissions = db.relationship("Permission", secondary=role_permissions)
     created_at = db.Column(DateTime, default=datetime.datetime.utcnow)
+
+    def __init__(self, name: str = None) -> None:
+        super().__init__()
+        self.name = name
+        self.slug = name.lower().replace(' ', '-')
 
     def __repr__(self):
         return f'<Roles "{self.name}">'
 
 
 class Permission(db.Model):
-    __tablename__ = 'permissions'
+    __tablename__ = "permissions"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     slug = db.Column(db.String(120), nullable=False)
+
+    def __init__(self, name: str = None) -> None:
+        super().__init__()
+        self.name = name
+        self.slug = name.lower().replace(' ', '-')
 
     def __repr__(self):
         return f'<Permissions "{self.name}">'
