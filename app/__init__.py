@@ -2,15 +2,20 @@ from flask import Flask
 from config import Config
 from dotenv import load_dotenv
 from app.extensions import db, migrate, bcrypt, seeder
+from app import models
+
+
+# Blueprints
+from app.routes import auth_bp
 
 load_dotenv()
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
     # Initialize Flask extensions here
-    from app import models
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -18,8 +23,7 @@ def create_app(config_class=Config):
     seeder.init_app(app, db)
 
     # Register blueprints here
-    from app.users import bp as users_bp
-    app.register_blueprint(users_bp)
+    app.register_blueprint(auth_bp)
 
     @app.route('/')
     def index():
