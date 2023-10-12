@@ -17,6 +17,16 @@ def res_bad_request(errors=None, message="Bad Request."):
     return jsonify({"message": message, "errors": errors}), 400
 
 
+# 401 Unauthorized
+def res_unauthorized(message="Unauthorized."):
+    return jsonify({"message": message}), 401
+
+
+# 401 Unauthorized
+def res_forbidden(message="Forbidden."):
+    return jsonify({"message": message}), 403
+
+
 # 422 Unprocessable Entity
 def res_unprocessable_entity(errors, message="Unprocessable Entity."):
     return jsonify({"message": message, "errors": errors}), 422
