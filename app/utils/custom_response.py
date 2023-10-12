@@ -7,13 +7,14 @@ from flask import jsonify
 def res_success(data=None, message="Successful"):
     if data is None:
         return jsonify({"message": message}), 200
-
     return jsonify({"message": message, "data": data}), 200
 
 
 # 400 Bad Request
 def res_bad_request(errors=None, message="Bad Request."):
-    return jsonify({"message": message, "errors": errors}), 400
+    if errors is None:
+        return jsonify({"message": message, "errors": errors}), 400
+    return jsonify({"message": message}), 400
 
 
 # 422 Unprocessable Entity

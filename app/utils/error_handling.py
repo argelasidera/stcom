@@ -16,7 +16,10 @@ def post(schema):
                 return res_unprocessable_entity(errors=e.messages_dict)
             except BadRequest as e:
                 return res_bad_request(e.description)
-            except Exception:
+            except Exception as e:
+                print("post exception: ", e)
                 return res_server_error()
+
         return inner
+
     return outer
