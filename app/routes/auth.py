@@ -1,7 +1,7 @@
 import os
 import jwt
 from flask import Blueprint
-from app.dto import login_schema
+from app.dto import loginDTO
 from app.utils import post, res_success, res_bad_request
 from app.models import User
 from app.extensions import bcrypt
@@ -10,7 +10,7 @@ bp = Blueprint("auth", __name__)
 
 
 @bp.route("/login", methods=["POST"])
-@post(login_schema)
+@post(loginDTO)
 def login(payload):
     user = User.query.filter_by(email=payload.get("email")).first()
 
