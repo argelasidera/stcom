@@ -13,8 +13,8 @@ def res_success(data=None, message="Successful"):
 # 400 Bad Request
 def res_bad_request(errors=None, message="Bad Request."):
     if errors is None:
-        return jsonify({"message": message, "errors": errors}), 400
-    return jsonify({"message": message}), 400
+        return jsonify({"message": message}), 400
+    return jsonify({"message": message, "errors": errors}), 400
 
 
 # 422 Unprocessable Entity
