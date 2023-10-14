@@ -11,15 +11,15 @@ from .custom_response import (
 from marshmallow import ValidationError
 from werkzeug.exceptions import BadRequest
 from functools import wraps
-from app.models import User, user_schema
+from app.models import User, user_schema_factory
 
 
-def post(schema):
+def post(schema_dto):
     def outer(fn):
         @wraps(fn)
         def inner(*args, **kwargs):
             try:
-                payload = schema.load(dict(request.json))
+                payload = schema_dto.load(dict(request.json))
                 return fn(payload, *args, **kwargs)
             except ValidationError as e:
                 return res_unprocessable_entity(errors=e.messages_dict)
@@ -34,7 +34,10 @@ def post(schema):
     return outer
 
 
-def private_route(permission: str = None):
+put = post
+
+
+def private_route(permission: str = None, get_loggedin_user: bool = False):
     def outer(fn):
         @wraps(fn)
         def inner(*args, **kwargs):
@@ -57,7 +60,7 @@ def private_route(permission: str = None):
                 if not data and data.get("email") is None:
                     return res_unauthorized("Unauthorized request.")
 
-                user = User.query.filter_by(email=data.get("email")).first_or_404()
+                user = User.query.filter_by(email=data.get("email")).first()
 
                 # Unauthorized if user not found
                 if user is None:
@@ -65,9 +68,11 @@ def private_route(permission: str = None):
 
                 # Access the api if the route has no set permission
                 if not permission:
-                    return fn(*args, **kwargs)
+                    if not get_loggedin_user:
+                        return fn(*args, **kwargs)
+                    return fn(*args, loggedin_user=user, **kwargs)
 
-                user_dump = user_schema.dump(user)
+                user_dump = user_schema_factory().dump(user)
 
                 has_permission = False
 
@@ -79,7 +84,9 @@ def private_route(permission: str = None):
 
                 # Access the api if has linked permission
                 if has_permission:
-                    return fn(*args, **kwargs)
+                    if not get_loggedin_user:
+                        return fn(*args, **kwargs)
+                    return fn(*args, loggedin_user=user, **kwargs)
 
                 # Otherwise, forbid to access the api
                 return res_forbidden()

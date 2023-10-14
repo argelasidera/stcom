@@ -25,8 +25,8 @@ def res_forbidden(message="Forbidden."):
     return jsonify({"message": message}), 403
 
 
-# 404 Page Not Found
-def res_page_not_found(message="Page Not Found."):
+# 404 Not Found
+def res_not_found(message="Not Found."):
     return jsonify({"message": message}), 404
 
 
