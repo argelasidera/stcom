@@ -1,7 +1,5 @@
 from flask import jsonify
 
-# TODO: add 404 403 and 401 status codes
-
 
 # 200 OK
 def res_success(data=None, message="Successful"):
@@ -22,9 +20,14 @@ def res_unauthorized(message="Unauthorized."):
     return jsonify({"message": message}), 401
 
 
-# 401 Unauthorized
+# 403 Forbidden
 def res_forbidden(message="Forbidden."):
     return jsonify({"message": message}), 403
+
+
+# 404 Page Not Found
+def res_page_not_found(message="Page Not Found."):
+    return jsonify({"message": message}), 404
 
 
 # 422 Unprocessable Entity
