@@ -77,3 +77,7 @@ class RoleSchema(SQLAlchemyAutoSchema):
     slug = auto_field()
     permissions = fields.Nested(PermissionSchema, many=True)
     created_at = auto_field()
+
+
+def role_schema_factory(**kwargs):
+    return RoleSchema(**kwargs)

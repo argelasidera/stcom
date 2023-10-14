@@ -6,7 +6,7 @@ from app import models
 
 
 # Blueprints
-from app.routes import auth_bp, users_bp
+from app.routes import auth_bp, users_bp, roles_bp
 
 load_dotenv()
 
@@ -25,6 +25,7 @@ def create_app(config_class=Config):
     # Register blueprints here
     app.register_blueprint(auth_bp)
     app.register_blueprint(users_bp)
+    app.register_blueprint(roles_bp)
 
     @app.route("/")
     def index():

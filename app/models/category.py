@@ -1,6 +1,5 @@
 import datetime
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-
 from sqlalchemy import DateTime
 from app.extensions import db
 
@@ -52,3 +51,7 @@ class CategorySchema(SQLAlchemyAutoSchema):
     created_by = auto_field()
     created_at = auto_field()
     updated_at = auto_field()
+
+
+def category_schema_factory(**kwargs):
+    return CategorySchema(**kwargs)

@@ -1,5 +1,4 @@
-from marshmallow import Schema, fields, post_load
-from app.models import User
+from marshmallow import Schema, fields
 
 
 class CreateUserDTO(Schema):
