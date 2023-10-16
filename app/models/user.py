@@ -14,7 +14,10 @@ class User(db.Model):
     email = db.Column(db.String(60), unique=True, nullable=False)
     name = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey("roles.id", ondelete="SET NULL"))
+    role_id = db.Column(
+        db.Integer,
+        db.ForeignKey("roles.id", ondelete="SET NULL"),
+    )
     role = db.relationship("Role")
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     created_at = db.Column(DateTime, default=datetime.datetime.utcnow)

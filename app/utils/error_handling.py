@@ -37,7 +37,7 @@ def post(schema_dto):
 put = post
 
 
-def private_route(permission: str = None, get_loggedin_user: bool = False):
+def private_route(permission: str = None, show_loggedin_user: bool = False):
     def outer(fn):
         @wraps(fn)
         def inner(*args, **kwargs):
@@ -68,7 +68,7 @@ def private_route(permission: str = None, get_loggedin_user: bool = False):
 
                 # Access the api if the route has no set permission
                 if not permission:
-                    if not get_loggedin_user:
+                    if not show_loggedin_user:
                         return fn(*args, **kwargs)
                     return fn(*args, loggedin_user=user, **kwargs)
 
@@ -84,7 +84,7 @@ def private_route(permission: str = None, get_loggedin_user: bool = False):
 
                 # Access the api if has linked permission
                 if has_permission:
-                    if not get_loggedin_user:
+                    if not show_loggedin_user:
                         return fn(*args, **kwargs)
                     return fn(*args, loggedin_user=user, **kwargs)
 

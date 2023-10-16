@@ -34,7 +34,7 @@ def get_user(id):
 
 
 @bp.route("", methods=["POST"])
-@private_route("add-user", get_loggedin_user=True)
+@private_route("add-user", show_loggedin_user=True)
 @post(createUserDto)
 def create_user(payload, loggedin_user):
     user = User(
