@@ -1,0 +1,1 @@
+This folder is where the upload files stored.

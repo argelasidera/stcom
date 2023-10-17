@@ -1,14 +1,25 @@
+import os
+from os import path
 from flask import Blueprint, request
-from app.utils import res_bad_request, res_success, res_not_found
+from werkzeug.utils import secure_filename
+from app.utils import res_bad_request, res_success, res_not_found, res_server_error
 from app.utils import post, put, private_route
 from app.models import Category, category_schema_factory
 from app.dto import createCategoryDTO, updateCategoryDTO
 from app.extensions import db
 
+
 bp = Blueprint("categories", __name__, url_prefix="/categories")
 
 
-# WIP
+ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
+UPLOADS_PATH = "./static/uploads"
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @bp.route("/file", methods=["POST"])
 @private_route()
 def upload_category_file():
@@ -16,10 +27,20 @@ def upload_category_file():
         print(request.files)
         if "file" not in request.files:
             return res_bad_request(message="No file found.")
-        return res_success(message="Success")
+
+        file = request.files["file"]
+
+        if file.filename == "":
+            return res_bad_request(message="No file found.")
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOADS_PATH, filename))
+
+        return res_success(message="File successfully uploaded.")
     except Exception as e:
         print(e)
-        return res_bad_request(e)
+        return res_server_error()
 
 
 @bp.route("", methods=["GET"])
