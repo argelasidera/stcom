@@ -1,6 +1,7 @@
 from flask import Flask
 from config import Config
 from dotenv import load_dotenv
+from flask_cors import CORS
 from app.extensions import db, migrate, bcrypt, seeder
 from app import models
 
@@ -14,6 +15,7 @@ load_dotenv()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    CORS(app)
 
     # Initialize Flask extensions here
 
