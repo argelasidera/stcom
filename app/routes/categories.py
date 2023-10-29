@@ -48,7 +48,7 @@ def upload_category_file():
 def get_categories():
     schema = category_schema_factory(many=True)
     categories = Category.query.all()
-    return res_success(data={"categories": schema.dump(categories)})
+    return res_success(data=schema.dump(categories))
 
 
 @bp.route("/<int:id>", methods=["GET"])
@@ -58,7 +58,7 @@ def get_category(id):
     category = Category.query.filter_by(id=id).first()
     if not category:
         return res_not_found(message="Category not found.")
-    return res_success(data={"category": schema.dump(category)})
+    return res_success(data=schema.dump(category))
 
 
 @bp.route("", methods=["POST"])

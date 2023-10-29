@@ -20,7 +20,7 @@ bp = Blueprint("users", __name__, url_prefix="/users")
 def get_users():
     schema = user_schema_factory(exclude=["password"], many=True)
     users = User.query.all()
-    return res_success({"users": schema.dump(users)})
+    return res_success(data=schema.dump(users))
 
 
 @bp.route("/<int:id>", methods=["GET"])
@@ -30,7 +30,7 @@ def get_user(id):
     user = User.query.filter_by(id=id).first()
     if not user:
         return res_not_found("User not found.")
-    return res_success({"user": schema.dump(user)})
+    return res_success(data=schema.dump(user))
 
 
 @bp.route("", methods=["POST"])

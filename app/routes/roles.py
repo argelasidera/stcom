@@ -13,7 +13,7 @@ bp = Blueprint("roles", __name__, url_prefix="/roles")
 def get_roles():
     schema = role_schema_factory(many=True)
     roles = Role.query.all()
-    return res_success({"roles": schema.dump(roles)})
+    return res_success(data=schema.dump(roles))
 
 
 @bp.route("", methods=["POST"])
