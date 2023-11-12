@@ -1,4 +1,5 @@
-from flask import Flask
+import os
+from flask import Flask, send_from_directory
 from config import Config
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -14,6 +15,7 @@ load_dotenv()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
+    app._static_folder = "static"
     app.config.from_object(config_class)
     CORS(app)
 
@@ -29,6 +31,14 @@ def create_app(config_class=Config):
     app.register_blueprint(users_bp)
     app.register_blueprint(roles_bp)
     app.register_blueprint(categories_bp)
+
+    @app.route("/uploads/<path:name>")
+    def serve_static(name):
+        print(os.getcwd())
+        root_dir = os.path.dirname(os.getcwd())
+        return send_from_directory(
+            os.path.join(root_dir, "stcom-api", "static", "uploads"), name
+        )
 
     @app.route("/")
     def index():

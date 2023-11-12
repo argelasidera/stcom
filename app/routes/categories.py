@@ -1,7 +1,6 @@
 import os
-from os import path
+import uuid
 from flask import Blueprint, request
-from werkzeug.utils import secure_filename
 from app.utils import res_bad_request, res_success, res_not_found, res_server_error
 from app.utils import post, put, private_route
 from app.models import Category, category_schema_factory
@@ -34,10 +33,15 @@ def upload_category_file():
             return res_bad_request(message="No file found.")
 
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            # filename = secure_filename(file.filename)
+            file_ext = file.filename.rsplit(".", 1)[1]
+            filename = f"{uuid.uuid4()}.{file_ext}"
             file.save(os.path.join(UPLOADS_PATH, filename))
 
-        return res_success(message="File successfully uploaded.")
+        return res_success(
+            message="File successfully uploaded.",
+            data={"file_name": filename},
+        )
     except Exception as e:
         print(e)
         return res_server_error()
