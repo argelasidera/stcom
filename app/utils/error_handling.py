@@ -1,6 +1,9 @@
 import os
 import jwt
 from flask import request
+
+from app.utils.check_if_has_permission import check_if_has_permission
+
 from .custom_response import (
     res_unprocessable_entity,
     res_bad_request,
@@ -72,15 +75,7 @@ def private_route(permission: str = None, show_loggedin_user: bool = False):
                         return fn(*args, **kwargs)
                     return fn(*args, loggedin_user=user, **kwargs)
 
-                user_dump = user_schema_factory().dump(user)
-
-                has_permission = False
-
-                for perm in user_dump["role"]["permissions"]:
-                    # Check if the account has the linked permission
-                    if perm["slug"] == permission:
-                        has_permission = True
-                        break
+                has_permission = check_if_has_permission(user, permission)
 
                 # Access the api if has linked permission
                 if has_permission:
