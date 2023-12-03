@@ -1,8 +1,9 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
+from app.utils import NotEmptyString
 
 
 class CreateCategoryDTO(Schema):
-    title = fields.String(required=True)
+    title = NotEmptyString(required=True)
     date = fields.DateTime()
     tag = fields.String()
     description = fields.String()
