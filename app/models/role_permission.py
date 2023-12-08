@@ -81,3 +81,7 @@ class RoleSchema(SQLAlchemyAutoSchema):
 
 def role_schema_factory(**kwargs):
     return RoleSchema(**kwargs)
+
+
+def permission_schema_factory(**kwargs):
+    return PermissionSchema(**kwargs)

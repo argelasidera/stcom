@@ -2,6 +2,9 @@ import datetime
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from sqlalchemy import DateTime
 from app.extensions import db
+from marshmallow import fields
+
+from app.models.user import UserSchema
 
 
 class Category(db.Model):
@@ -13,7 +16,8 @@ class Category(db.Model):
     tag = db.Column(db.String(120))
     description = db.Column(db.Text())
     file_name = db.Column(db.String(255))
-    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"))
+    created_by_user = db.relationship("User")
     created_at = db.Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(DateTime)
 
@@ -41,6 +45,7 @@ class Category(db.Model):
 class CategorySchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Category
+        include_relationships = True
 
     id = auto_field()
     title = auto_field()
@@ -51,6 +56,7 @@ class CategorySchema(SQLAlchemyAutoSchema):
     created_by = auto_field()
     created_at = auto_field()
     updated_at = auto_field()
+    created_by_user = fields.Nested(UserSchema, exclude=["password", "role"])
 
 
 def category_schema_factory(**kwargs):

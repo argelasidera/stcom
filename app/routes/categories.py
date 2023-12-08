@@ -62,6 +62,7 @@ def get_category(id):
     category = Category.query.filter_by(id=id).first()
     if not category:
         return res_not_found(message="Category not found.")
+    print("category", schema.dump(category))
     return res_success(data=schema.dump(category))
 
 
@@ -103,7 +104,7 @@ def update_category(payload, id):
     return res_success(message="Category updated successfully.")
 
 
-@bp.route("/<int:id>", methods=["PUT"])
+@bp.route("/<int:id>", methods=["DELETE"])
 @private_route("delete-category")
 def delete_category(id):
     category = Category.query.filter_by(id=id).first()
