@@ -53,6 +53,7 @@ def private_route(permission: str = None, show_loggedin_user: bool = False):
                     return res_unauthorized("Unauthorized request.")
 
                 token = bearer.split()[1]
+
                 data = jwt.decode(
                     token,
                     os.getenv("JWT_SECRET"),
@@ -86,8 +87,12 @@ def private_route(permission: str = None, show_loggedin_user: bool = False):
                 # Otherwise, forbid to access the api
                 return res_forbidden()
 
+            except jwt.InvalidTokenError as e:
+                print("post exception 401: ", e)
+                return res_unauthorized("Invalid token")
+
             except Exception as e:
-                print("post exception: ", e)
+                print("post exception 500: ", e)
                 return res_server_error()
 
         return inner
