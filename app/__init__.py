@@ -1,6 +1,5 @@
 import os
 from flask import Flask, send_from_directory
-from config import Config
 from dotenv import load_dotenv
 from flask_cors import CORS
 from app.extensions import db, migrate, bcrypt, seeder
@@ -13,14 +12,13 @@ from app.routes import auth_bp, users_bp, roles_bp, categories_bp, permissions_b
 load_dotenv()
 
 
-def create_app(config_class=Config):
+def create_app():
     app = Flask(__name__)
     app._static_folder = "static"
-    app.config.from_object(config_class)
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     CORS(app)
 
     # Initialize Flask extensions here
-
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
