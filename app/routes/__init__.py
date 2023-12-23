@@ -3,3 +3,4 @@ from app.routes.users import bp as users_bp
 from app.routes.roles import bp as roles_bp
 from app.routes.categories import bp as categories_bp
 from app.routes.permissions import bp as permissions_bp
+from app.routes.upload_file import bp as upload_files_bp

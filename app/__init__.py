@@ -7,7 +7,7 @@ from app import models
 
 
 # Blueprints
-from app.routes import auth_bp, users_bp, roles_bp, categories_bp, permissions_bp
+from app.routes import auth_bp, users_bp, roles_bp, categories_bp, permissions_bp, upload_files_bp
 
 load_dotenv()
 
@@ -30,6 +30,7 @@ def create_app():
     app.register_blueprint(roles_bp)
     app.register_blueprint(categories_bp)
     app.register_blueprint(permissions_bp)
+    app.register_blueprint(upload_files_bp)
 
     @app.route("/uploads/<path:name>")
     def serve_static(name):

@@ -7,9 +7,7 @@ from app.models import Category, category_schema_factory
 from app.dto import createCategoryDTO, updateCategoryDTO
 from app.extensions import db
 
-
 bp = Blueprint("categories", __name__, url_prefix="/categories")
-
 
 ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 UPLOADS_PATH = "./static/uploads"
@@ -19,6 +17,7 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# TODO: Remove this once FE change url
 @bp.route("/file", methods=["POST"])
 @private_route()
 def upload_category_file():
